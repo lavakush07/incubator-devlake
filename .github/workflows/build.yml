@@ -49,7 +49,10 @@ jobs:
           docker build -t ${{ env.IMAGE_LAKE }}:latest --file ./Dockerfile .
           docker tag ${{ env.IMAGE_LAKE }}:latest ${{ env.IMAGE_LAKE }}:${{ github.ref_name }}
           docker push ${{ env.IMAGE_LAKE }}:${{ github.ref_name }}
+          printf {{ github.ref_name }}
+          printf {{ github.ref_name }} | grep -Pq '^v(\d+).(\d+).(\d+)$' && echo yes
           if printf {{ github.ref_name }} | grep -Pq '^v(\d+).(\d+).(\d+)$'; then
+            echo "push latest tag"
             docker push ${{ env.IMAGE_LAKE }}:latest
           fi
   build-configui:
